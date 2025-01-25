@@ -11,13 +11,18 @@
    data class Employee(val imageId: Int, val name: String) (картинка и имя работника)
    ```
 4) создаем класс, который будет являться адаптером (в н.с. EmployeeAdapter)
-   4.1) наследуем класс от RecyclerView.Adapter<ViewHolder>
-	      класс адаптер работает с ViewHolder (создаем его сами) - специальный класс, который будет хранить элементы, к ним можно будет обратиться
+   
+   4.1. наследуем класс от RecyclerView.Adapter<ViewHolder>
+   
+	класс адаптер работает с ViewHolder (создаем его сами) - специальный класс, который будет хранить элементы, к ним можно будет обратиться
 ```
 	class EmployeeHolder(item: View): RecyclerView.ViewHolder(item) //item - элемент, который отрисовываем
 ```
-   4.2) создаем шаблон элемента в layout (ConstraintLayout -> CardView -> LinearLayout --> ImageView --> TextView)
-   4.3) см реализацию EmployeeAdapter в проекте
+
+   4.2. создаем шаблон элемента в layout (ConstraintLayout -> CardView -> LinearLayout --> ImageView --> TextView)
+   
+   4.3. см реализацию EmployeeAdapter в проекте
+   
 5) в коде главного экрана настроим RecyclerView и обработаем кнопку добавления элемента
 ```
     private fun init() {
