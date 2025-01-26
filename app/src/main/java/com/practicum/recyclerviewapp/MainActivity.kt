@@ -1,9 +1,12 @@
 package com.practicum.recyclerviewapp
 
+import android.content.Intent
 import android.icu.lang.UCharacter.VerticalOrientation
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -14,19 +17,18 @@ import com.practicum.recyclerviewapp.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val adapter = EmployeeAdapter()
-    private val imageIdList = listOf(
-        R.drawable.employee1,
-        R.drawable.employee2,
-        R.drawable.employee3,
-        R.drawable.employee4,
-        R.drawable.employee5
-    )
-    private var employeeIndex = 0
+    lateinit var editLauncher: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        editLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == RESULT_OK && it.data != null) {
+                adapter.addEmployee(it.data?.getSerializableExtra("employee") as Employee)
+            }
+        }
         init()
     }
 
@@ -36,10 +38,11 @@ class MainActivity : AppCompatActivity() {
             rcView.adapter = adapter
 
             btnAdd.setOnClickListener {
-                if (employeeIndex > 4) employeeIndex = 0
-                adapter.addEmployee(Employee(imageIdList[employeeIndex], "Employee $employeeIndex"))
-                employeeIndex++
+                val intent = Intent(this@MainActivity, EditActivity::class.java)
+                editLauncher.launch(intent)
             }
+
+
         }
     }
 }
